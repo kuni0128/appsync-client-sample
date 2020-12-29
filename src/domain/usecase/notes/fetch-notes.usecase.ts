@@ -6,8 +6,7 @@ import { notesStore } from '@/store/notes/notes.store'
 
 type Note = NoteInput
 
-// TODO: FetchNotesUsercaseとかの方がわかりやすい？
-class GetNotesUsecase implements Usecase {
+class FetchNotesUsecase implements Usecase {
   async execute () {
     // TODO: application service → infra層から取得する
     const result = await API.graphql(graphqlOperation(listNotes)) as { data: ListNotesQuery }
@@ -18,4 +17,4 @@ class GetNotesUsecase implements Usecase {
   }
 }
 
-export const getNotesUsecase = new GetNotesUsecase()
+export const fetchNotesUsecase = new FetchNotesUsecase()

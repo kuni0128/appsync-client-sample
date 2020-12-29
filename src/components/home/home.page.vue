@@ -10,7 +10,7 @@ import Observable from 'zen-observable'
 import { onCreateNote, onDeleteNote, onUpdateNote } from '@/graphql/subscriptions'
 import { deleteNote } from '@/graphql/mutations'
 import { NoteInput, OnCreateNoteSubscription, OnDeleteNoteSubscription, OnUpdateNoteSubscription } from '@/api'
-import { getNotesUsecase } from '@/domain/usecase/notes/get-notes.usecase'
+import { fetchNotesUsecase } from '@/domain/usecase/notes/fetch-notes.usecase'
 import { notesQuery } from '@/domain/query/notes/notes.query'
 
 type Note = NoteInput
@@ -25,7 +25,7 @@ export default defineComponent({
   setup () {
     const notes = ref<Note[]>([])
     const getNotes = async () => {
-      await getNotesUsecase.execute()
+      await fetchNotesUsecase.execute()
       notes.value = notesQuery.listNotes()
     }
     const subscribeNote = async () => {
