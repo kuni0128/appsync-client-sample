@@ -7,10 +7,11 @@ import { defineComponent, onMounted, ref } from 'vue'
 import HomePresentaion from '@/components/home/home.presentation.vue'
 import { API, graphqlOperation } from 'aws-amplify'
 import Observable from 'zen-observable'
-import { onCreateNote, onDeleteNote, onUpdateNote } from '@/graphql/subscriptions'
+import { onDeleteNote, onUpdateNote } from '@/graphql/subscriptions'
 import { deleteNote } from '@/graphql/mutations'
 import { NoteInput, OnCreateNoteSubscription, OnDeleteNoteSubscription, OnUpdateNoteSubscription } from '@/api'
 import { fetchNotesUsecase } from '@/domain/usecase/notes/fetch-notes.usecase'
+import { subscribeNotesUsecase } from '@/domain/usecase/notes/subscribe-notes.usecase'
 import { notesQuery } from '@/domain/query/notes/notes.query'
 
 type Note = NoteInput
@@ -29,12 +30,7 @@ export default defineComponent({
       notes.value = notesQuery.listNotes()
     }
     const subscribeNote = async () => {
-      const result = await API.graphql(graphqlOperation(onCreateNote)) as Observable<object>
-      result.subscribe({
-        next: ({ value: { data } }: NoteSubscriptionEvent) => {
-          notes.value.push(data.onCreateNote as Note)
-        }
-      })
+      subscribeNotesUsecase.execute()
     }
     const subscribeUpdateNote = async () => {
       const result = await API.graphql(graphqlOperation(onUpdateNote)) as Observable<object>
