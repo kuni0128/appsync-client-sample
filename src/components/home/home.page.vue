@@ -14,10 +14,10 @@
 import { defineComponent, onMounted, ref } from 'vue'
 import { API, graphqlOperation } from 'aws-amplify'
 import Observable from 'zen-observable'
-import { listNotes } from '../graphql/queries'
-import { onCreateNote, onDeleteNote, onUpdateNote } from '../graphql/subscriptions'
-import { deleteNote as deleteNoteMutation } from '../graphql/mutations'
-import { ListNotesQuery, NoteInput, OnCreateNoteSubscription, OnDeleteNoteSubscription, OnUpdateNoteSubscription } from '../api'
+import { listNotes } from '@/graphql/queries'
+import { onCreateNote, onDeleteNote, onUpdateNote } from '@/graphql/subscriptions'
+import { deleteNote as deleteNoteMutation } from '@/graphql/mutations'
+import { ListNotesQuery, NoteInput, OnCreateNoteSubscription, OnDeleteNoteSubscription, OnUpdateNoteSubscription } from '@/api'
 
 type Note = NoteInput
 type NoteSubscriptionEvent = { value: { data: OnCreateNoteSubscription } }
