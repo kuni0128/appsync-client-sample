@@ -18,6 +18,7 @@ class NotesStore extends Store<Notes> {
     this.state.notes = notes
   }
 
+  // TODO push, update, removeの方がわかりやすい？
   create (note: Note) {
     this.state.notes.push(note)
   }
