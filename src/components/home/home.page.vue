@@ -6,18 +6,13 @@
 import { defineComponent, onMounted, ref } from 'vue'
 import HomePresentaion from '@/components/home/home.presentation.vue'
 import { API, graphqlOperation } from 'aws-amplify'
-import Observable from 'zen-observable'
-import { onDeleteNote, onUpdateNote } from '@/graphql/subscriptions'
 import { deleteNote } from '@/graphql/mutations'
-import { NoteInput, OnCreateNoteSubscription, OnDeleteNoteSubscription, OnUpdateNoteSubscription } from '@/api'
+import { NoteInput } from '@/api'
 import { fetchNotesUsecase } from '@/domain/usecase/notes/fetch-notes.usecase'
 import { subscribeNotesUsecase } from '@/domain/usecase/notes/subscribe-notes.usecase'
 import { notesQuery } from '@/domain/query/notes/notes.query'
 
 type Note = NoteInput
-type NoteSubscriptionEvent = { value: { data: OnCreateNoteSubscription } }
-type NoteUpdateSubscriptionEvent = { value: { data: OnUpdateNoteSubscription } }
-type NoteDeleteSubscriptionEvent = { value: { data: OnDeleteNoteSubscription } }
 
 export default defineComponent({
   components: {
@@ -25,44 +20,23 @@ export default defineComponent({
   },
   setup () {
     const notes = ref<Note[]>([])
-    const getNotes = async () => {
+    const fetchNotes = async () => {
       await fetchNotesUsecase.execute()
       notes.value = notesQuery.listNotes()
     }
-    const subscribeNote = async () => {
-      subscribeNotesUsecase.execute()
+    const subscribeNotes = async () => {
+      await subscribeNotesUsecase.execute()
     }
-    const subscribeUpdateNote = async () => {
-      const result = await API.graphql(graphqlOperation(onUpdateNote)) as Observable<object>
-      result.subscribe({
-        next: ({ value: { data } }: NoteUpdateSubscriptionEvent) => {
-          const note = data.onUpdateNote as Note
-          notes.value[notes.value.findIndex(n => n.id === note.id)] = note
-        }
-      })
-    }
-    const subscribeDeleteNote = async () => {
-      const result = await API.graphql(graphqlOperation(onDeleteNote)) as Observable<object>
-      result.subscribe({
-        next: ({ value: { data } }: NoteDeleteSubscriptionEvent) => {
-          const noteId = data.onDeleteNote as string
-          notes.value = notes.value.filter(n => n.id !== noteId)
-        }
-      })
-    }
-
     const removeNote = async (noteId: string) => {
       await API.graphql(graphqlOperation(deleteNote, { noteId }))
     }
 
     onMounted(() => {
-      getNotes()
-      subscribeNote()
-      subscribeUpdateNote()
-      subscribeDeleteNote()
+      fetchNotes()
+      subscribeNotes()
     })
 
-    return { notes, getNotes, subscribeNote, subscribeUpdateNote, removeNote, subscribeDeleteNote }
+    return { notes, fetchNotes, subscribeNotes, removeNote }
   }
 })
 </script>
