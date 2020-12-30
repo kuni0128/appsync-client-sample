@@ -1,7 +1,5 @@
 import { Store } from '@/store/store'
-import { NoteInput } from '@/api'
-
-type Note = NoteInput
+import { Note } from '@/domain/notes/note/note'
 
 interface Notes extends Object {
   notes: Note[];

@@ -12,9 +12,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
-import { NoteInput } from '@/api'
-
-type Note = NoteInput
+import { Note } from '@/domain/notes/note/note'
 
 export default defineComponent({
   props: {

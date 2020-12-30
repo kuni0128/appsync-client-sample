@@ -5,12 +5,10 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue'
 import HomePresentaion from '@/components/home/home.presentation.vue'
-import { NoteInput } from '@/api'
-import { showNotesUsecase } from '@/domain/notes/usecase/show-notes.usecase'
-import { removeNoteUsecase } from '@/domain/notes/note/usecase/remove-note.usecase'
-import { notesQuery } from '@/domain/notes/query/notes.query'
-
-type Note = NoteInput
+import { showNotesUsecase } from '@/domain/notes/show-notes.usecase'
+import { removeNoteUsecase } from '@/domain/notes/note/remove-note.usecase'
+import { notesQuery } from '@/domain/notes/notes.query'
+import { Note } from '@/domain/notes/note/note'
 
 export default defineComponent({
   components: {
