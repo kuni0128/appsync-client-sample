@@ -1,12 +1,12 @@
 export class Entity<T> {
   entity: T
 
-  constructor(entity: T) {
+  constructor (entity: T) {
     this.entity = entity
-    this.applyEntity()
+    this.applyEntity(entity)
   }
 
-  applyEntity() {
-    Object.assign(this, this.entity)
+  applyEntity (entity: T) {
+    Object.assign(this, entity)
   }
 }

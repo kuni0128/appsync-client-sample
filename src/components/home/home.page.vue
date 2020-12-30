@@ -8,14 +8,14 @@ import HomePresentaion from '@/components/home/home.presentation.vue'
 import { showNotesUsecase } from '@/domain/notes/show-notes.usecase'
 import { removeNoteUsecase } from '@/domain/notes/note/remove-note.usecase'
 import { notesQuery } from '@/domain/notes/notes.query'
-import { Note } from '@/domain/notes/note/note'
+import { NoteEntity } from '@/domain/notes/note/note.entity'
 
 export default defineComponent({
   components: {
     HomePresentaion
   },
   setup () {
-    const notes = ref<Note[]>([])
+    const notes = ref<NoteEntity[]>([])
     const showNotes = async () => {
       await showNotesUsecase.execute()
       notes.value = notesQuery.listNotes()

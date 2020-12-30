@@ -5,7 +5,7 @@ import { fetchNotesService } from '@/service/notes/fetch-notes.service'
 import { subscribeNoteCreationService } from '@/service/notes/note/subscribe-notes-creation.service'
 import { subscribeNoteUpdateService } from '@/service/notes/note/subscribe-notes-update.service'
 import { subscribeNoteDeletionService } from '@/service/notes/note/subscribe-notes-deletion.service'
-import { Note } from './note/note'
+import { NoteEntity } from './note/note.entity'
 
 type NoteCreationSubscriptionEvent = { value: { data: OnCreateNoteSubscription } }
 type NoteUpdateSubscriptionEvent = { value: { data: OnUpdateNoteSubscription } }
@@ -16,31 +16,42 @@ class ShowNotesUsecase implements Usecase {
     const notes = await fetchNotesService.execute()
     if (notes) notesStore.set(notes)
 
-    await this.subscribeCreation()
-    await this.subscribeUpdate()
-    await this.subscribeDeletion()
+    await this.subscribeNoteCreation()
+    await this.subscribeNoteUpdate()
+    await this.subscribeNoteDeletion()
   }
 
-  async subscribeCreation () {
+  async subscribeNoteCreation () {
     const observable = await subscribeNoteCreationService.execute()
     observable.subscribe({
       next: ({ value: { data } }: NoteCreationSubscriptionEvent) => {
-        notesStore.push(data.onCreateNote as Note)
+        if (data.onCreateNote) {
+          notesStore.push(new NoteEntity({
+            id: data.onCreateNote.id,
+            name: data.onCreateNote.name,
+            completed: data.onCreateNote.completed
+          }))
+        }
       }
     })
   }
 
-  async subscribeUpdate () {
+  async subscribeNoteUpdate () {
     const observable = await subscribeNoteUpdateService.execute()
     observable.subscribe({
       next: ({ value: { data } }: NoteUpdateSubscriptionEvent) => {
-        const note = data.onUpdateNote as Note
-        notesStore.update(note)
+        if (data.onUpdateNote) {
+          notesStore.update(new NoteEntity({
+            id: data.onUpdateNote.id,
+            name: data.onUpdateNote.name,
+            completed: data.onUpdateNote.completed
+          }))
+        }
       }
     })
   }
 
-  async subscribeDeletion () {
+  async subscribeNoteDeletion () {
     const observable = await subscribeNoteDeletionService.execute()
     observable.subscribe({
       next: ({ value: { data } }: NoteDeletionSubscriptionEvent) => {

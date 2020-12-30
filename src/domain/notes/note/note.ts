@@ -1,5 +1,5 @@
-export type Note = Readonly<{
+export type Note = {
   id: string
   name: string
   completed: boolean
-}>
+}

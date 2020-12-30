@@ -1,8 +1,8 @@
 import { Store } from '@/store/store'
-import { Note } from '@/domain/notes/note/note'
+import { NoteEntity } from '@/domain/notes/note/note.entity'
 
 interface Notes extends Object {
-  notes: Note[];
+  notes: NoteEntity[];
 }
 
 class NotesStore extends Store<Notes> {
@@ -12,21 +12,21 @@ class NotesStore extends Store<Notes> {
     }
   }
 
-  set (notes: Note[]) {
+  set (notes: NoteEntity[]) {
     this.state.notes = notes
   }
 
-  push (note: Note) {
+  push (note: NoteEntity) {
     this.state.notes.push(note)
   }
 
-  update (note: Note) {
-    const index = this.state.notes.findIndex(n => n.id === note.id)
+  update (note: NoteEntity) {
+    const index = this.state.notes.findIndex(n => n.entity.id === note.entity.id)
     this.state.notes.splice(index, 1, note)
   }
 
   remove (noteId: string) {
-    const index = this.state.notes.findIndex(n => n.id === noteId)
+    const index = this.state.notes.findIndex(n => n.entity.id === noteId)
     this.state.notes.splice(index, 1)
   }
 }
