@@ -18,8 +18,7 @@ class NotesStore extends Store<Notes> {
     this.state.notes = notes
   }
 
-  // TODO push, update, removeの方がわかりやすい？
-  create (note: Note) {
+  push (note: Note) {
     this.state.notes.push(note)
   }
 
@@ -28,7 +27,7 @@ class NotesStore extends Store<Notes> {
     this.state.notes.splice(index, 1, note)
   }
 
-  delete (noteId: string) {
+  remove (noteId: string) {
     const index = this.state.notes.findIndex(n => n.id === noteId)
     this.state.notes.splice(index, 1)
   }

@@ -1,4 +1,4 @@
 export interface Service {
-  execute(...params: any): void;
+  execute(...params: any): any;
 }
   

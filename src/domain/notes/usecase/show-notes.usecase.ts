@@ -1,44 +1,37 @@
-import { API, graphqlOperation } from 'aws-amplify'
-import Observable from 'zen-observable'
-import { onCreateNote, onUpdateNote, onDeleteNote } from '@/graphql/subscriptions'
-import { OnCreateNoteSubscription, OnUpdateNoteSubscription, OnDeleteNoteSubscription, NoteInput, ListNotesQuery } from '@/api'
+import { OnCreateNoteSubscription, OnUpdateNoteSubscription, OnDeleteNoteSubscription, NoteInput } from '@/api'
 import { Usecase } from '../../interface'
 import { notesStore } from '@/store/notes/notes.store'
-import { listNotes } from '@/graphql/queries'
+import { fetchNotesService } from '@/service/notes/fetch-notes.service'
+import { subscribeNotesCreationService } from '@/service/notes/subscribe-notes-creation.service'
+import { subscribeNotesUpdateService } from '@/service/notes/subscribe-notes-update.service'
+import { subscribeNotesDeletionService } from '@/service/notes/subscribe-notes-deletion.service'
 
 type Note = NoteInput
-type NoteSubscriptionEvent = { value: { data: OnCreateNoteSubscription } }
+type NoteCreationSubscriptionEvent = { value: { data: OnCreateNoteSubscription } }
 type NoteUpdateSubscriptionEvent = { value: { data: OnUpdateNoteSubscription } }
-type NoteDeleteSubscriptionEvent = { value: { data: OnDeleteNoteSubscription } }
+type NoteDeletionSubscriptionEvent = { value: { data: OnDeleteNoteSubscription } }
 
 class ShowNotesUsecase implements Usecase {
   async execute () {
-    await this.fetch()
-    await this.subscribeCreate()
+    const notes = await fetchNotesService.execute()
+    if (notes) notesStore.set(notes)
+
+    await this.subscribeCreation()
     await this.subscribeUpdate()
-    await this.subscribeDelete()
+    await this.subscribeDeletion()
   }
 
-  async fetch () {
-    // TODO: Application service? or/and Domain service?
-    const result = await API.graphql(graphqlOperation(listNotes)) as { data: ListNotesQuery }
-    if (result.data.listNotes && result.data.listNotes.length > 0) {
-      const notes = result.data.listNotes?.map((note) => note as Note)
-      notesStore.set(notes)
-    }
-  }
-
-  async subscribeCreate () {
-    const result = await API.graphql(graphqlOperation(onCreateNote)) as Observable<object>
+  async subscribeCreation () {
+    const result = await subscribeNotesCreationService.execute()
     result.subscribe({
-      next: ({ value: { data } }: NoteSubscriptionEvent) => {
-        notesStore.create(data.onCreateNote as Note)
+      next: ({ value: { data } }: NoteCreationSubscriptionEvent) => {
+        notesStore.push(data.onCreateNote as Note)
       }
     })
   }
 
   async subscribeUpdate () {
-    const result = await API.graphql(graphqlOperation(onUpdateNote)) as Observable<object>
+    const result = await subscribeNotesUpdateService.execute()
     result.subscribe({
       next: ({ value: { data } }: NoteUpdateSubscriptionEvent) => {
         const note = data.onUpdateNote as Note
@@ -47,12 +40,12 @@ class ShowNotesUsecase implements Usecase {
     })
   }
 
-  async subscribeDelete () {
-    const result = await API.graphql(graphqlOperation(onDeleteNote)) as Observable<object>
+  async subscribeDeletion () {
+    const result = await subscribeNotesDeletionService.execute()
     result.subscribe({
-      next: ({ value: { data } }: NoteDeleteSubscriptionEvent) => {
+      next: ({ value: { data } }: NoteDeletionSubscriptionEvent) => {
         const noteId = data.onDeleteNote as string
-        notesStore.delete(noteId)
+        notesStore.remove(noteId)
       }
     })
   }
