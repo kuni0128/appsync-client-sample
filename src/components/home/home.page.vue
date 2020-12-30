@@ -5,10 +5,9 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue'
 import HomePresentaion from '@/components/home/home.presentation.vue'
-import { API, graphqlOperation } from 'aws-amplify'
-import { deleteNote } from '@/graphql/mutations'
 import { NoteInput } from '@/api'
 import { showNotesUsecase } from '@/domain/notes/usecase/show-notes.usecase'
+import { removeNoteUsecase } from '@/domain/notes/note/usecase/remove-note.usecase'
 import { notesQuery } from '@/domain/notes/query/notes.query'
 
 type Note = NoteInput
@@ -24,7 +23,7 @@ export default defineComponent({
       notes.value = notesQuery.listNotes()
     }
     const removeNote = async (noteId: string) => {
-      await API.graphql(graphqlOperation(deleteNote, { noteId }))
+      await removeNoteUsecase.execute(noteId)
     }
 
     onMounted(() => {
