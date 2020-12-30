@@ -22,8 +22,8 @@ class ShowNotesUsecase implements Usecase {
   }
 
   async subscribeCreation () {
-    const result = await subscribeNoteCreationService.execute()
-    result.subscribe({
+    const observable = await subscribeNoteCreationService.execute()
+    observable.subscribe({
       next: ({ value: { data } }: NoteCreationSubscriptionEvent) => {
         notesStore.push(data.onCreateNote as Note)
       }
@@ -31,8 +31,8 @@ class ShowNotesUsecase implements Usecase {
   }
 
   async subscribeUpdate () {
-    const result = await subscribeNoteUpdateService.execute()
-    result.subscribe({
+    const observable = await subscribeNoteUpdateService.execute()
+    observable.subscribe({
       next: ({ value: { data } }: NoteUpdateSubscriptionEvent) => {
         const note = data.onUpdateNote as Note
         notesStore.update(note)
@@ -41,8 +41,8 @@ class ShowNotesUsecase implements Usecase {
   }
 
   async subscribeDeletion () {
-    const result = await subscribeNoteDeletionService.execute()
-    result.subscribe({
+    const observable = await subscribeNoteDeletionService.execute()
+    observable.subscribe({
       next: ({ value: { data } }: NoteDeletionSubscriptionEvent) => {
         const noteId = data.onDeleteNote as string
         notesStore.remove(noteId)
