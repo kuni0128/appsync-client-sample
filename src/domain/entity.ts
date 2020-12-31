@@ -6,7 +6,7 @@ export class Entity<T> {
     this.applyEntity(entity)
   }
 
-  applyEntity (entity: T) {
+  private applyEntity (entity: T) {
     Object.assign(this, entity)
   }
 }
