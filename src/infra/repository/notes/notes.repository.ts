@@ -1,7 +1,7 @@
 import { API, graphqlOperation } from 'aws-amplify'
 import { ListNotesQuery } from '@/api'
 import { listNotes } from '@/graphql/queries'
-import { NoteEntity } from '@/domain/notes/note/note.entity'
+import { NoteEntity, createNoteEntity } from '@/domain/notes/note/note.entity'
 
 class NotesRepository {
   async list (): Promise<NoteEntity[] | undefined> {
@@ -9,7 +9,7 @@ class NotesRepository {
     if (result.data.listNotes == null || result.data.listNotes.length <= 0) return
     return result.data.listNotes.reduce((entities: NoteEntity[], note) => {
       if (note != null) {
-        entities.push(new NoteEntity(note))
+        entities.push(createNoteEntity(note))
       }
       return entities
     }, [])

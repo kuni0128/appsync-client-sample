@@ -5,7 +5,7 @@ import { fetchNotesService } from '@/service/notes/fetch-notes.service'
 import { subscribeNoteCreationService } from '@/service/notes/note/subscribe-notes-creation.service'
 import { subscribeNoteUpdateService } from '@/service/notes/note/subscribe-notes-update.service'
 import { subscribeNoteDeletionService } from '@/service/notes/note/subscribe-notes-deletion.service'
-import { NoteEntity } from './note/note.entity'
+import { createNoteEntity } from './note/note.entity'
 
 type NoteCreationSubscriptionEvent = { value: { data: OnCreateNoteSubscription } }
 type NoteUpdateSubscriptionEvent = { value: { data: OnUpdateNoteSubscription } }
@@ -26,7 +26,7 @@ class ShowNotesUsecase implements Usecase {
     observable.subscribe({
       next: ({ value: { data } }: NoteCreationSubscriptionEvent) => {
         if (data.onCreateNote) {
-          notesStore.push(new NoteEntity(data.onCreateNote))
+          notesStore.push(createNoteEntity(data.onCreateNote))
         }
       }
     })
@@ -37,7 +37,7 @@ class ShowNotesUsecase implements Usecase {
     observable.subscribe({
       next: ({ value: { data } }: NoteUpdateSubscriptionEvent) => {
         if (data.onUpdateNote) {
-          notesStore.update(new NoteEntity(data.onUpdateNote))
+          notesStore.update(createNoteEntity(data.onUpdateNote))
         }
       }
     })
