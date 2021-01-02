@@ -1,4 +1,4 @@
-import { notesStore } from '@/store/notes/notes.store'
+import { notesStore } from '@/store/notes/notes-store'
 
 class NotesQuery {
   listNotes = () => {

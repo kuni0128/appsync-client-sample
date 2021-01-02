@@ -4,11 +4,11 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue'
-import HomePresentaion from '@/components/home/home.presentation.vue'
+import HomePresentaion from '@/components/home/home-presentation.vue'
 import { showNotesUsecase } from '@/domain/notes/show-notes.usecase'
-import { removeNoteUsecase } from '@/domain/notes/note/remove-note.usecase'
-import { notesQuery } from '@/domain/notes/notes.query'
-import { NoteEntity } from '@/domain/notes/note/note.entity'
+import { removeNoteUsecase } from '@/domain/notes/note/remove-note-usecase'
+import { notesQuery } from '@/domain/notes/notes-query'
+import { NoteEntity } from '@/domain/notes/note/note-entity'
 
 export default defineComponent({
   components: {

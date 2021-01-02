@@ -1,9 +1,9 @@
 import { Service } from '@/service/interface'
-import { notesRepository } from '@/infra/repository/notes/notes.repository'
+import { notesRepositoryImpl } from '@/infra/repository/notes/notes-repository-impl'
 
 class FetchNotesService implements Service {
   async execute () {
-    return await notesRepository.list()
+    return await notesRepositoryImpl.list()
   }
 }
 

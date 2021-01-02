@@ -12,7 +12,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
-import { NoteEntity } from '@/domain/notes/note/note.entity'
+import { NoteEntity } from '@/domain/notes/note/note-entity'
 
 export default defineComponent({
   props: {

@@ -1,9 +1,9 @@
-import { noteRepository } from '@/infra/repository/notes/note/note.repository'
+import { noteRepositoryImpl } from '@/infra/repository/notes/note/note-repository-impl'
 import { Service } from '../../interface'
 
 class SubscribeNoteCreationService implements Service {
   async execute () {
-    return await noteRepository.subscribeCreation()
+    return await noteRepositoryImpl.subscribeCreation()
   }
 }
 

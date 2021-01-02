@@ -2,7 +2,7 @@ import { onCreateNote, onDeleteNote, onUpdateNote } from '@/graphql/subscription
 import { API, graphqlOperation } from 'aws-amplify'
 import Observable from 'zen-observable'
 
-class NoteRepository {
+class NoteRepositoryImpl {
   async subscribeCreation () {
     return await API.graphql(graphqlOperation(onCreateNote)) as Observable<object>
   }
@@ -16,4 +16,4 @@ class NoteRepository {
   }
 }
 
-export const noteRepository = new NoteRepository()
+export const noteRepositoryImpl = new NoteRepositoryImpl()

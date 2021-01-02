@@ -1,5 +1,5 @@
 import { Store } from '@/store/store'
-import { NoteEntity } from '@/domain/notes/note/note.entity'
+import { NoteEntity } from '@/domain/notes/note/note-entity'
 
 interface Notes extends Object {
   notes: NoteEntity[];
