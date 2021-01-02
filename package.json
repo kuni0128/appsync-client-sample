@@ -10,6 +10,7 @@
   "dependencies": {
     "aws-amplify": "^3.3.13",
     "core-js": "^3.6.5",
+    "reflect-metadata": "^0.1.13",
     "register-service-worker": "^1.7.1",
     "tsyringe": "^4.4.0",
     "vue": "^3.0.0",
