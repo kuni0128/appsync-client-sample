@@ -26,11 +26,7 @@ class ShowNotesUsecase implements Usecase {
     observable.subscribe({
       next: ({ value: { data } }: NoteCreationSubscriptionEvent) => {
         if (data.onCreateNote) {
-          notesStore.push(new NoteEntity({
-            id: data.onCreateNote.id,
-            name: data.onCreateNote.name,
-            completed: data.onCreateNote.completed
-          }))
+          notesStore.push(new NoteEntity(data.onCreateNote))
         }
       }
     })
@@ -41,11 +37,7 @@ class ShowNotesUsecase implements Usecase {
     observable.subscribe({
       next: ({ value: { data } }: NoteUpdateSubscriptionEvent) => {
         if (data.onUpdateNote) {
-          notesStore.update(new NoteEntity({
-            id: data.onUpdateNote.id,
-            name: data.onUpdateNote.name,
-            completed: data.onUpdateNote.completed
-          }))
+          notesStore.update(new NoteEntity(data.onUpdateNote))
         }
       }
     })

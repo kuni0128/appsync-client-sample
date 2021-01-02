@@ -9,11 +9,7 @@ class NotesRepository {
     if (result.data.listNotes == null || result.data.listNotes.length <= 0) return
     return result.data.listNotes.reduce((entities: NoteEntity[], note) => {
       if (note != null) {
-        entities.push(new NoteEntity({
-          id: note.id,
-          name: note.name,
-          completed: note.completed
-        }))
+        entities.push(new NoteEntity(note))
       }
       return entities
     }, [])

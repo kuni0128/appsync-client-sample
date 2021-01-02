@@ -2,9 +2,9 @@
   <div class="home">
     <h1>Note list</h1>
     <ul>
-      <li v-for="note in notes" :key="note.entity.id">
-        {{ note.entity.name }}
-        <button @click="remove(note.entity.id)">delete</button>
+      <li v-for="note in notes" :key="note.props.id">
+        {{ note.props.name }}
+        <button @click="remove(note.props.id)">delete</button>
       </li>
     </ul>
   </div>

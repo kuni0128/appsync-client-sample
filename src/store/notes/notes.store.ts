@@ -21,12 +21,12 @@ class NotesStore extends Store<Notes> {
   }
 
   update (note: NoteEntity) {
-    const index = this.state.notes.findIndex(n => n.entity.id === note.entity.id)
+    const index = this.state.notes.findIndex(n => n.props.id === note.props.id)
     this.state.notes.splice(index, 1, note)
   }
 
   remove (noteId: string) {
-    const index = this.state.notes.findIndex(n => n.entity.id === noteId)
+    const index = this.state.notes.findIndex(n => n.props.id === noteId)
     this.state.notes.splice(index, 1)
   }
 }
