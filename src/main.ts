@@ -4,6 +4,7 @@ import './registerServiceWorker'
 import router from './router'
 import Amplify from 'aws-amplify'
 import { appsyncConfig } from './aws-exports'
+import 'reflect-metadata'
 
 Amplify.configure(appsyncConfig)
 createApp(App).use(router).mount('#app')
