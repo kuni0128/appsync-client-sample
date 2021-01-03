@@ -1,19 +1,20 @@
-import { onCreateNote, onDeleteNote, onUpdateNote } from '@/graphql/subscriptions'
+import { NoteRepository } from '@/domain/notes/note/note-repository'
 import { API, graphqlOperation } from 'aws-amplify'
+import { injectable } from 'tsyringe'
 import Observable from 'zen-observable'
+import { onCreateNote, onDeleteNote, onUpdateNote } from '@/graphql/subscriptions'
 
-class NoteRepositoryImpl {
-  async subscribeCreation () {
+@injectable()
+export class NoteRepositoryImpl implements NoteRepository {
+  async subscribeCreation (): Promise<Observable<object>> {
     return await API.graphql(graphqlOperation(onCreateNote)) as Observable<object>
   }
 
-  async subscribeUpdate () {
+  async subscribeUpdate (): Promise<Observable<object>> {
     return await API.graphql(graphqlOperation(onUpdateNote)) as Observable<object>
   }
 
-  async subscribeDeletion () {
+  async subscribeDeletion (): Promise<Observable<object>> {
     return await API.graphql(graphqlOperation(onDeleteNote)) as Observable<object>
   }
 }
-
-export const noteRepositoryImpl = new NoteRepositoryImpl()

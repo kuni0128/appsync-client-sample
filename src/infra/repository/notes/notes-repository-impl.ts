@@ -1,9 +1,9 @@
 import { API, graphqlOperation } from 'aws-amplify'
+import { injectable } from 'tsyringe'
 import { ListNotesQuery } from '@/api'
 import { listNotes } from '@/graphql/queries'
 import { NoteEntity, createNoteEntity } from '@/domain/notes/note/note-entity'
 import { NotesRepository } from '@/domain/notes/notes-repository'
-import { injectable } from 'tsyringe'
 
 @injectable()
 export class NotesRepositoryImpl implements NotesRepository {

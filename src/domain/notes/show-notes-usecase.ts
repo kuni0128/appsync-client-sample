@@ -3,10 +3,10 @@ import { OnCreateNoteSubscription, OnUpdateNoteSubscription, OnDeleteNoteSubscri
 import { Usecase } from '../usecase'
 import { notesStore } from '@/store/notes/notes-store'
 import { FetchNotesService } from '@/service/notes/fetch-notes-service'
-import { subscribeNoteCreationService } from '@/service/notes/note/subscribe-notes-creation-service'
-import { subscribeNoteUpdateService } from '@/service/notes/note/subscribe-notes-update-service'
-import { subscribeNoteDeletionService } from '@/service/notes/note/subscribe-notes-deletion-service'
+import { SubscribeNoteCreationService } from '@/service/notes/note/subscribe-notes-creation-service'
 import { createNoteEntity } from './note/note-entity'
+import { SubscribeNoteDeletionService } from '@/service/notes/note/subscribe-notes-deletion-service'
+import { SubscribeNoteUpdateService } from '@/service/notes/note/subscribe-notes-update-service'
 
 type NoteCreationSubscriptionEvent = { value: { data: OnCreateNoteSubscription } }
 type NoteUpdateSubscriptionEvent = { value: { data: OnUpdateNoteSubscription } }
@@ -15,7 +15,12 @@ type NoteDeletionSubscriptionEvent = { value: { data: OnDeleteNoteSubscription }
 @singleton()
 export class ShowNotesUsecase implements Usecase {
   /* eslint-disable no-useless-constructor */
-  constructor (@inject('FETCH_NOTES_SERVICE') private fetchNotesService: FetchNotesService) {}
+  constructor (
+    @inject('FETCH_NOTES_SERVICE') private fetchNotesService: FetchNotesService,
+    @inject('SUBSCRIBE_NOTE_CREATION_SERVICE') private subscribeNoteCreationService: SubscribeNoteCreationService,
+    @inject('SUBSCRIBE_NOTE_DELETION_SERVICE') private subscribeNoteDeletionService: SubscribeNoteDeletionService,
+    @inject('SUBSCRIBE_NOTE_UPDATE_SERVICE') private subscribeNoteUpdateService: SubscribeNoteUpdateService
+  ) {}
 
   async execute () {
     const notes = await this.fetchNotesService.execute()
@@ -27,7 +32,7 @@ export class ShowNotesUsecase implements Usecase {
   }
 
   async subscribeNoteCreation () {
-    const observable = await subscribeNoteCreationService.execute()
+    const observable = await this.subscribeNoteCreationService.execute()
     observable.subscribe({
       next: ({ value: { data } }: NoteCreationSubscriptionEvent) => {
         if (data.onCreateNote) {
@@ -38,7 +43,7 @@ export class ShowNotesUsecase implements Usecase {
   }
 
   async subscribeNoteUpdate () {
-    const observable = await subscribeNoteUpdateService.execute()
+    const observable = await this.subscribeNoteUpdateService.execute()
     observable.subscribe({
       next: ({ value: { data } }: NoteUpdateSubscriptionEvent) => {
         if (data.onUpdateNote) {
@@ -49,7 +54,7 @@ export class ShowNotesUsecase implements Usecase {
   }
 
   async subscribeNoteDeletion () {
-    const observable = await subscribeNoteDeletionService.execute()
+    const observable = await this.subscribeNoteDeletionService.execute()
     observable.subscribe({
       next: ({ value: { data } }: NoteDeletionSubscriptionEvent) => {
         const noteId = data.onDeleteNote as string

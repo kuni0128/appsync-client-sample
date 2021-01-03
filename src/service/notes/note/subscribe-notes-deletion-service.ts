@@ -1,10 +1,13 @@
-import { noteRepositoryImpl } from '@/infra/repository/notes/note/note-repository-impl'
+import { injectable, inject } from 'tsyringe'
 import { Service } from '../../service'
+import { NoteRepository } from '@/domain/notes/note/note-repository'
 
-class SubscribeNoteDeletionService implements Service {
+@injectable()
+export class SubscribeNoteDeletionService implements Service {
+  /* eslint-disable no-useless-constructor */
+  constructor (@inject('NOTE_REPOSITORY') private noteRepository: NoteRepository) {}
+
   async execute () {
-    return await noteRepositoryImpl.subscribeDeletion()
+    return await this.noteRepository.subscribeDeletion()
   }
 }
-
-export const subscribeNoteDeletionService = new SubscribeNoteDeletionService()
