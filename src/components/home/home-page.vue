@@ -6,7 +6,7 @@
 import 'reflect-metadata'
 import { defineComponent, onMounted, ref } from 'vue'
 import HomePresentaion from '@/components/home/home-presentation.vue'
-import { ShowNotesUsecase } from '@/domain/notes/show-notes.usecase'
+import { ShowNotesUsecase } from '@/domain/notes/show-notes-usecase'
 import { removeNoteUsecase } from '@/domain/notes/note/remove-note-usecase'
 import { notesQuery } from '@/domain/notes/notes-query'
 import { NoteEntity } from '@/domain/notes/note/note-entity'

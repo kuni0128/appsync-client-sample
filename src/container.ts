@@ -1,6 +1,6 @@
 import { container } from 'tsyringe'
 import { NotesRepositoryImpl } from '@/infra/repository/notes/notes-repository-impl'
-import { FetchNotesService } from '@/service/notes/fetch-notes.service'
+import { FetchNotesService } from '@/service/notes/fetch-notes-service'
 
 // Repository
 container.register('NOTES_REPOSITORY', { useClass: NotesRepositoryImpl })

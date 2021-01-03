@@ -1,11 +1,11 @@
 import { singleton, inject } from 'tsyringe'
 import { OnCreateNoteSubscription, OnUpdateNoteSubscription, OnDeleteNoteSubscription } from '@/api'
-import { Usecase } from '../interface'
+import { Usecase } from '../usecase'
 import { notesStore } from '@/store/notes/notes-store'
-import { FetchNotesService } from '@/service/notes/fetch-notes.service'
-import { subscribeNoteCreationService } from '@/service/notes/note/subscribe-notes-creation.service'
-import { subscribeNoteUpdateService } from '@/service/notes/note/subscribe-notes-update.service'
-import { subscribeNoteDeletionService } from '@/service/notes/note/subscribe-notes-deletion.service'
+import { FetchNotesService } from '@/service/notes/fetch-notes-service'
+import { subscribeNoteCreationService } from '@/service/notes/note/subscribe-notes-creation-service'
+import { subscribeNoteUpdateService } from '@/service/notes/note/subscribe-notes-update-service'
+import { subscribeNoteDeletionService } from '@/service/notes/note/subscribe-notes-deletion-service'
 import { createNoteEntity } from './note/note-entity'
 
 type NoteCreationSubscriptionEvent = { value: { data: OnCreateNoteSubscription } }

@@ -1,5 +1,5 @@
 import { injectable, inject } from 'tsyringe'
-import { Service } from '@/service/interface'
+import { Service } from '@/service/service'
 import { NotesRepository } from '@/domain/notes/notes-repository'
 
 @injectable()

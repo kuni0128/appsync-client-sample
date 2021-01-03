@@ -1,5 +1,5 @@
 import { API, graphqlOperation } from 'aws-amplify'
-import { Usecase } from '@/domain/interface'
+import { Usecase } from '@/domain/usecase'
 import { deleteNote } from '@/graphql/mutations'
 
 class RemoveNoteUsecase implements Usecase {
