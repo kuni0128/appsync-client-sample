@@ -1,10 +1,13 @@
+import { injectable, inject } from 'tsyringe'
 import { Service } from '@/service/interface'
-import { notesRepositoryImpl } from '@/infra/repository/notes/notes-repository-impl'
+import { NotesRepository } from '@/domain/notes/notes-repository'
 
-class FetchNotesService implements Service {
+@injectable()
+export class FetchNotesService implements Service {
+  /* eslint-disable no-useless-constructor */
+  constructor (@inject('NOTES_REPOSITORY') private notesRepository: NotesRepository) {}
+
   async execute () {
-    return await notesRepositoryImpl.list()
+    return await this.notesRepository.list()
   }
 }
-
-export const fetchNotesService = new FetchNotesService()

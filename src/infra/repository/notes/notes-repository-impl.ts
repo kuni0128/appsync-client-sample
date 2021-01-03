@@ -2,8 +2,11 @@ import { API, graphqlOperation } from 'aws-amplify'
 import { ListNotesQuery } from '@/api'
 import { listNotes } from '@/graphql/queries'
 import { NoteEntity, createNoteEntity } from '@/domain/notes/note/note-entity'
+import { NotesRepository } from '@/domain/notes/notes-repository'
+import { injectable } from 'tsyringe'
 
-class NotesRepositoryImpl {
+@injectable()
+export class NotesRepositoryImpl implements NotesRepository {
   async list (): Promise<NoteEntity[] | undefined> {
     const result = await API.graphql(graphqlOperation(listNotes)) as { data: ListNotesQuery }
     if (result.data.listNotes == null || result.data.listNotes.length <= 0) return
@@ -15,5 +18,3 @@ class NotesRepositoryImpl {
     }, [])
   }
 }
-
-export const notesRepositoryImpl = new NotesRepositoryImpl()

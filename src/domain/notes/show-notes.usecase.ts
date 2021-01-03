@@ -1,7 +1,8 @@
+import { singleton, inject } from 'tsyringe'
 import { OnCreateNoteSubscription, OnUpdateNoteSubscription, OnDeleteNoteSubscription } from '@/api'
 import { Usecase } from '../interface'
 import { notesStore } from '@/store/notes/notes-store'
-import { fetchNotesService } from '@/service/notes/fetch-notes.service'
+import { FetchNotesService } from '@/service/notes/fetch-notes.service'
 import { subscribeNoteCreationService } from '@/service/notes/note/subscribe-notes-creation.service'
 import { subscribeNoteUpdateService } from '@/service/notes/note/subscribe-notes-update.service'
 import { subscribeNoteDeletionService } from '@/service/notes/note/subscribe-notes-deletion.service'
@@ -11,9 +12,13 @@ type NoteCreationSubscriptionEvent = { value: { data: OnCreateNoteSubscription }
 type NoteUpdateSubscriptionEvent = { value: { data: OnUpdateNoteSubscription } }
 type NoteDeletionSubscriptionEvent = { value: { data: OnDeleteNoteSubscription } }
 
-class ShowNotesUsecase implements Usecase {
+@singleton()
+export class ShowNotesUsecase implements Usecase {
+  /* eslint-disable no-useless-constructor */
+  constructor (@inject('FETCH_NOTES_SERVICE') private fetchNotesService: FetchNotesService) {}
+
   async execute () {
-    const notes = await fetchNotesService.execute()
+    const notes = await this.fetchNotesService.execute()
     if (notes) notesStore.set(notes)
 
     await this.subscribeNoteCreation()
@@ -53,5 +58,3 @@ class ShowNotesUsecase implements Usecase {
     })
   }
 }
-
-export const showNotesUsecase = new ShowNotesUsecase()
